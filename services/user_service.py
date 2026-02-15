@@ -34,3 +34,6 @@ def create_user(data:user.UserCreate) -> user.UserResponse:
             created_at= internal_user["created_at"],
             updated_at= internal_user["updated_at"]
         )    
+
+def get_all_users()-> list[dict]:
+    return fake_user_db
