@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr, Field, field_validator, model_validato
 from uuid import uuid4, UUID
 from datetime import datetime
 from typing import Annotated
-import validators
+from .validators import validate_password_length, validate_passwords_match
 
 class UserCreate(BaseModel):
     name:str = Field(min_length=3)
@@ -13,11 +13,11 @@ class UserCreate(BaseModel):
     @field_validator("password")
     @classmethod
     def password_lengt(cls,value):
-        return validators.validate_password_lengt(value)
+        return validate_password_length(value)
     
     @model_validator(mode="after")
     def passwords_match(self):
-        validators.validate_passwords_match(self.password, self.confirm_password)
+        validate_passwords_match(self.password, self.confirm_password)
         return self
     
     @field_validator("email")

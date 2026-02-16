@@ -1,4 +1,4 @@
-def validate_password_lengt(value:str) -> str:
+def validate_password_length(value:str) -> str:
         if len(value) < 8:
             raise ValueError("Password must be at least 8 characters long")
         return value

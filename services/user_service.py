@@ -1,5 +1,5 @@
 from schemas import user
-from uuid import uuid4
+from uuid import uuid4, UUID
 from datetime import datetime, timezone
 
 fake_user_db = []
@@ -37,3 +37,9 @@ def create_user(data:user.UserCreate) -> user.UserResponse:
 
 def get_all_users()-> list[dict]:
     return fake_user_db
+
+def get_user_by_id(id:UUID) -> dict:
+    for user in fake_user_db:
+        if user["id"] == id:
+            return user
+    raise Exception("user not found")
