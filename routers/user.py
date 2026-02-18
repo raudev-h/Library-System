@@ -32,3 +32,8 @@ async def get_user(id:UUID):
         return UserResponse.model_validate(user)
     except:
         raise Exception("user not found")
+
+@router.post("/", response_model=UserResponse)
+async def create_user(data:UserCreate) -> UserResponse:
+        user = user_service.create_user(data)
+        return UserResponse.model_validate(user)

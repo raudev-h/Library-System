@@ -1,10 +1,10 @@
-from schemas import user
+from schemas import UserResponse, UserCreate
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
 
 fake_user_db = []
 
-def create_user(data:user.UserCreate) -> user.UserResponse:
+def create_user(data:UserCreate) -> UserResponse:
 
     for user in fake_user_db:
         if data.email == user.email:
@@ -25,7 +25,7 @@ def create_user(data:user.UserCreate) -> user.UserResponse:
 
     fake_user_db.append(internal_user)
 
-    return user.UserResponse( 
+    return UserResponse( 
             id= internal_user["id"],
             name= internal_user["name"],
             email= internal_user["email"],
