@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 def validate_password_length(value:str) -> str:
         if len(value) < 8:
             raise ValueError("Password must be at least 8 characters long")
@@ -6,3 +8,8 @@ def validate_password_length(value:str) -> str:
 def validate_passwords_match(password:str, confirm_password:str):
         if password != confirm_password:
             raise ValueError("Passwords do not match")
+
+def validate_date(date:datetime):
+    if date > datetime.now(timezone.utc):
+        raise ValueError("La fecha es futura")
+    return date
