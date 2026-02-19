@@ -26,6 +26,8 @@ class UserCreate(BaseModel):
         return value.lower()
     
 class UserUpdateProfile(BaseModel):
+# El Annotated es una forma de hacer opcional el campo,
+#  pero podemos agregarle además esa validación adicional
     name: Annotated[str | None, Field(min_length=3)] = None
 
 class UserChangePassword(BaseModel):

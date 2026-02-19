@@ -1,4 +1,4 @@
-from schemas import UserResponse, UserCreate
+from schemas import UserResponse, UserCreate, UserUpdateProfile
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
 
@@ -43,3 +43,26 @@ def get_user_by_id(id:UUID) -> dict:
         if user["id"] == id:
             return user
     raise Exception("user not found")
+
+def _get_user_index(id:UUID) -> int:
+    for index, user in enumerate(fake_user_db):
+        if user["id"] == id:
+            return index
+    raise Exception("user not found")
+
+def update_user_profile(id:UUID, data:UserUpdateProfile):
+
+    index = _get_user_index(id)
+    current_user = fake_user_db[index]
+
+    updated_data = data.model_dump(exclude_unset=True)
+
+    if not updated_data:
+        return current_user
+    
+    if "name" in updated_data:
+        if current_user["name"] != updated_data["name"]:
+            current_user["updated_at"] = datetime.now(timezone.utc)
+            current_user["name"] = updated_data["name"]
+    
+    return current_user
