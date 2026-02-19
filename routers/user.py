@@ -43,3 +43,8 @@ async def create_user(data:UserCreate) -> UserResponse:
 async def update_user_profile(id:UUID, data:UserUpdateProfile):
     updated_user =  user_service.update_user_profile(id, data)
     return UserResponse.model_validate(updated_user)
+
+@router.delete("/{id}", status_code=204)
+async def delete_user(id:UUID):
+    user_service.delete_user(id)
+

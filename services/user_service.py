@@ -66,3 +66,13 @@ def update_user_profile(id:UUID, data:UserUpdateProfile):
             current_user["name"] = updated_data["name"]
     
     return current_user
+
+def delete_user(id:UUID):
+
+    index = _get_user_index(id)
+    current_user = fake_user_db[index]
+
+    if not current_user["is_active"]:
+        raise Exception("user already deleted")
+    
+    current_user["is_active"] = False
