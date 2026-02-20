@@ -34,3 +34,9 @@ def create_author(data:AuthorCreate) -> AuthorResponse:
 
 def get_all_authors() -> list[dict]:
     return fake_author_db
+
+def  get_author_by_id(id:UUID):
+    for author in fake_author_db:
+        if author["id"] == id:
+            return author
+    raise Exception({"description":"author not found"})
