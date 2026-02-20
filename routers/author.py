@@ -42,3 +42,19 @@ async def get_author(id: UUID):
 async def create_author(data: AuthorCreate) -> AuthorResponse:
     author = author_services.create_author(data)
     return AuthorResponse.model_validate(author)
+
+@router.patch("/{id}", response_model=AuthorResponse)
+async def update_author(id:UUID, data:AuthorUpdate) -> AuthorResponse:
+    updated_author = author_services.update_author(id,data)
+    return AuthorResponse.model_validate(updated_author)
+
+{
+  "id": "6eebdf95-d8c5-4fb4-8e79-1339ec6095c6",
+  "first_name": "pablo",
+  "last_name": "coelho",
+  "birth_date": "2000-05-02",
+  "nationality": "brasileño",
+  "biography": "Escritor",
+  "created_at": "2026-02-20T20:33:55.538448Z",
+  "updated_at": "2026-02-20T20:33:55.538448Z"
+}

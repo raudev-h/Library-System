@@ -40,3 +40,30 @@ def  get_author_by_id(id:UUID):
         if author["id"] == id:
             return author
     raise Exception({"description":"author not found"})
+
+def _get_author_index(id:UUID):
+    for index, author in enumerate(fake_author_db):
+        if author["id"] == id:
+            return index
+    raise Exception({"description":"author not found"})
+
+def update_author(id:UUID, data:AuthorUpdate) -> dict:
+
+    index = _get_author_index(id)
+    current_author = fake_author_db[index]
+
+    updated_data = data.model_dump(exclude_unset=True)
+
+    if not updated_data:
+        return current_author
+    
+    updated = False
+
+    for info, current_data in updated_data.items():
+        if current_author[info] != current_data:
+            current_author[info] = current_data
+            updated = True
+    
+    if updated:
+        current_author["updated_at"] = datetime.now(timezone.utc)
+    return current_author
