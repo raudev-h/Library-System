@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import date
 
 def validate_password_length(value:str) -> str:
         if len(value) < 8:
@@ -9,7 +9,7 @@ def validate_passwords_match(password:str, confirm_password:str):
         if password != confirm_password:
             raise ValueError("Passwords do not match")
 
-def validate_date(date:datetime):
-    if date > datetime.now(timezone.utc):
+def validate_date(incoming_date:date):
+    if incoming_date > date.today():
         raise ValueError("La fecha es futura")
-    return date
+    return incoming_date

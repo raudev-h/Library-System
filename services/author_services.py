@@ -31,3 +31,6 @@ def create_author(data:AuthorCreate) -> AuthorResponse:
         created_at= internal_author["created_at"],
         updated_at= internal_author["updated_at"]
     )
+
+def get_all_authors() -> list[dict]:
+    return fake_author_db
