@@ -38,3 +38,8 @@ class AuthorResponse(BaseModel):
     biography:str
     created_at:datetime
     updated_at: datetime
+
+class AuthorSummary(BaseModel):
+    id:UUID
+    first_name:str
+    last_name:str
