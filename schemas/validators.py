@@ -13,3 +13,7 @@ def validate_date(incoming_date:date):
     if incoming_date > date.today():
         raise ValueError("La fecha es futura")
     return incoming_date
+
+def validate_copies(copies:int):
+        if copies < 0:
+            raise ValueError("the number of copies must be positive")
