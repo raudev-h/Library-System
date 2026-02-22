@@ -1,4 +1,4 @@
-from schemas import AuthorResponse, AuthorCreate, AuthorUpdate
+from schemas import AuthorResponse, AuthorCreate, AuthorUpdate, AuthorSummary
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
 
@@ -67,3 +67,16 @@ def update_author(id:UUID, data:AuthorUpdate) -> dict:
     if updated:
         current_author["updated_at"] = datetime.now(timezone.utc)
     return current_author
+
+def find_authors(data:list[UUID]) -> list[dict]:
+    authors = []
+    for id in data:
+            author = get_author_by_id(id)
+            internal_author = {
+                "id":author["id"],
+                "first_name":author["first_name"],
+                "last_name":author["last_name"]
+            }
+            authors.append(internal_author)
+
+    return authors
