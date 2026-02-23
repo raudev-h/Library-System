@@ -17,3 +17,8 @@ async def get_loans() -> list[LoanResponse]:
 @router.get("/{id}", response_model=LoanResponse)
 async def get_loan(id:UUID) -> LoanResponse:
     return LoanResponse.model_validate(loan_service.get_loan_by_id(id))
+
+@router.post("/", response_model=LoanResponse)
+async def create_loan(data:LoanCreate):
+    loan = loan_service.create_loan(data.user_id,data.book_id)
+    return LoanResponse.model_validate(loan)
