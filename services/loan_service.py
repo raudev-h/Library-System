@@ -45,6 +45,21 @@ def create_loan(user_id:UUID, book_id:UUID) -> dict:
     fake_loan_db.append(loan)
     return loan
 
+def return_loan(id:UUID) -> dict:
+    loan = get_loan_by_id(id)
+
+    if loan["is_returned"]:
+        raise Exception(f"this loan was returned at {loan["return_date"]}")
+
+    book_id = loan["book_id"]
+    
+    loan["return_date"] = date.today()
+    loan["is_returned"] = True
+
+    book = get_book_by_id(book_id)
+    book["available_copies"] += 1
+
+    return loan
 
 def can_loan(user_id:UUID) -> bool:
     cont = 0

@@ -22,3 +22,8 @@ async def get_loan(id:UUID) -> LoanResponse:
 async def create_loan(data:LoanCreate):
     loan = loan_service.create_loan(data.user_id,data.book_id)
     return LoanResponse.model_validate(loan)
+
+@router.post("/{id}/return", response_model=LoanResponse)
+async def return_loan(id:UUID):
+    loan = loan_service.return_loan(id)
+    return LoanResponse.model_validate(loan)
