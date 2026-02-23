@@ -5,7 +5,7 @@ from uuid import UUID
 
 router = APIRouter(prefix="/book",
                     tags=["books"],
-                        responses={404,{"description": "books not found"}})
+                        responses={404:{"description": "books not found"}})
 
 @router.get("/", response_model=list[BookResponse])
 async def get_books():
@@ -30,6 +30,10 @@ async def create_book(data:BookCreate) -> BookResponse:
 async def update_book(id:UUID, data:BookUpdate):
     updated_book = book_service.update_book(id, data)
     return to_book_response(updated_book)
+
+@router.delete("/{id}", status_code=204)
+async def delete_book(id:UUID):
+    book_service.delete_book(id)
 
 def to_book_response(book:dict):
     book["author"] = [AuthorSummary.model_validate(author) for author in book["author"]]

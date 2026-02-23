@@ -95,3 +95,11 @@ def can_loan(user_id:UUID) -> bool:
                 cont += 1
     
     return cont < 3
+
+def has_active_loans(book_id:UUID) -> bool:
+    
+    for loan in fake_loan_db:
+        if loan["book_id"] == book_id and not loan["is_returned"]:
+                return True
+
+    return False

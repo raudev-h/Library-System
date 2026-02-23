@@ -41,3 +41,4 @@ class BookResponse(BaseModel):
     total_copies:int
     created_at: datetime
     updated_at: datetime
+    is_active:bool

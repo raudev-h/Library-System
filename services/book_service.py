@@ -2,6 +2,7 @@ from schemas import BookCreate, BookResponse, BookUpdate
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
 from services import author_services
+from services import loan_service
 
 fake_books_db = []
 
@@ -14,7 +15,7 @@ def get_book_by_id(id:UUID) -> dict:
             return book
     raise Exception("book not found")
 
-def _get_book_index(id:UUID) -> UUID:
+def _get_book_index(id:UUID) -> int:
     for index, book in enumerate(fake_books_db):
         if book["id"] == id:
             return index
@@ -36,7 +37,8 @@ def create_book(data:BookCreate) -> dict:
         "total_copies": data.total_copies,
         "available_copies":data.total_copies,
         "created_at":now,
-        "updated_at":now
+        "updated_at":now,
+        "is_active":True
     }
     fake_books_db.append(internal_book)
     return internal_book
@@ -66,4 +68,20 @@ def update_book(id:UUID, data:BookUpdate) -> dict:
     if updated:
         book["updated_at"] = datetime.now(timezone.utc)
     
+    return book
+
+def delete_book(book_id:UUID):
+    
+    index = _get_book_index(book_id)
+    
+    book = fake_books_db[index]
+
+    if not book["is_active"]:
+        raise Exception("this book was already deleted")
+    
+    if loan_service.has_active_loans(book_id):
+        raise Exception ("this book has active loans, cannot be deleted")
+    
+    book["is_active"] = False
+
     return book
