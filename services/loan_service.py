@@ -77,6 +77,16 @@ def update_loan(id:UUID, data:LoanUpdate) -> dict:
 
     return internal_loan
 
+def search_loans(is_returned:bool | None = None, skip:int = 0, limit:int = 10) -> list[dict]:
+    
+    if is_returned is None:
+        return get_all_loans()[skip:skip + limit]
+    
+    loans = [
+        loan for loan in fake_loan_db if loan["is_returned"] == is_returned
+    ]
+    return loans[skip:skip + limit]
+
 def can_loan(user_id:UUID) -> bool:
     cont = 0
     for loan in fake_loan_db:

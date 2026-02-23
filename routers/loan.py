@@ -8,10 +8,10 @@ router = APIRouter(prefix="/loan",
                         responses={404:{"description": "loans not found"}})
 
 @router.get("/", response_model=list[LoanResponse])
-async def get_loans() -> list[LoanResponse]:
+async def get_loans(is_returned: bool | None = None, skip:int = 0, limit:int = 10) -> list[LoanResponse]:
     return [
         LoanResponse.model_validate(loan)
-        for loan in loan_service.get_all_loans()
+        for loan in loan_service.search_loans(is_returned, skip, limit)
     ]
 
 @router.get("/{id}", response_model=LoanResponse)
