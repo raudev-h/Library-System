@@ -103,3 +103,10 @@ def has_active_loans(book_id:UUID) -> bool:
                 return True
 
     return False
+
+def has_user_active_loans(user_id:UUID) -> bool:
+
+    for loan in fake_loan_db:
+        if loan["user_id"] == user_id and not loan["is_returned"]:
+            return True
+    return False

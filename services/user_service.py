@@ -1,6 +1,7 @@
 from schemas import UserResponse, UserCreate, UserUpdateProfile
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
+from services import loan_service
 
 fake_user_db = []
 
@@ -74,5 +75,8 @@ def delete_user(id:UUID):
 
     if not current_user["is_active"]:
         raise Exception("user already deleted")
+    
+    if loan_service.has_user_active_loans(id):
+        raise Exception("this user has active loans, cannot be deleted")
     
     current_user["is_active"] = False
