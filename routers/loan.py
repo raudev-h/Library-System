@@ -27,3 +27,8 @@ async def create_loan(data:LoanCreate):
 async def return_loan(id:UUID):
     loan = loan_service.return_loan(id)
     return LoanResponse.model_validate(loan)
+
+@router.patch("/{id}", response_model=LoanResponse)
+async def update_loan(id:UUID, data:LoanUpdate):
+    loan = loan_service.update_loan(id, data)
+    return LoanResponse.model_validate(loan)

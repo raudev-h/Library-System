@@ -61,6 +61,22 @@ def return_loan(id:UUID) -> dict:
 
     return loan
 
+def update_loan(id:UUID, data:LoanUpdate) -> dict:
+
+    internal_loan = get_loan_by_id(id)
+
+    if  internal_loan["is_returned"]:
+        raise Exception("this loan was already returned")
+        
+    if not data.due_date > internal_loan["due_date"]:
+        raise Exception(
+            f"the new date({data.due_date}) is not after due_date{internal_loan["due_date"]}"
+            )
+    
+    internal_loan["due_date"] = data.due_date
+
+    return internal_loan
+
 def can_loan(user_id:UUID) -> bool:
     cont = 0
     for loan in fake_loan_db:
