@@ -6,7 +6,7 @@ from exceptions import BadRequestException, NotFoundException, ConflictException
 
 fake_user_db = []
 
-def create_user(data:UserCreate) -> UserResponse:
+def create_user(data:UserCreate) -> dict:
 
     for user in fake_user_db:
         if data.email == user.email:
@@ -27,15 +27,7 @@ def create_user(data:UserCreate) -> UserResponse:
 
     fake_user_db.append(internal_user)
 
-    return UserResponse( 
-            id= internal_user["id"],
-            name= internal_user["name"],
-            email= internal_user["email"],
-            is_active= internal_user["is_active"],
-            is_verified= internal_user["is_verified"],
-            created_at= internal_user["created_at"],
-            updated_at= internal_user["updated_at"]
-        )    
+    return internal_user  
 
 def get_all_users()-> list[dict]:
     return fake_user_db
