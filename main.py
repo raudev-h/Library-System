@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from routers import user, author
+from routers import user, author, loan, book
 from exceptions import BadRequestException, NotFoundException, ConflictException
 
 
@@ -29,3 +29,5 @@ async def conflict_handler(request, exc):
 
 app.include_router(user.router)
 app.include_router(author.router)
+app.include_router(book.router)
+app.include_router(loan.router)
