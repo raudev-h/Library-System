@@ -3,6 +3,7 @@ from uuid import uuid4, UUID
 from datetime import datetime, timezone
 from services import author_services
 from services import loan_service
+from exceptions import BadRequestException, NotFoundException, ConflictException
 
 fake_books_db = []
 
@@ -13,19 +14,19 @@ def get_book_by_id(id:UUID) -> dict:
     for book in fake_books_db:
         if book["id"] == id:
             return book
-    raise Exception("book not found")
+    raise NotFoundException("book not found")
 
 def _get_book_index(id:UUID) -> int:
     for index, book in enumerate(fake_books_db):
         if book["id"] == id:
             return index
-    raise Exception("book not found")
+    raise NotFoundException("book not found")
 
 def create_book(data:BookCreate) -> dict:
 
     for book in fake_books_db:
         if book["isbn"] == data.isbn:
-            raise Exception(f"Book {data.title} already exist")
+            raise ConflictException(f"Book {data.title} already exist")
     
     now = datetime.now(timezone.utc)
 
@@ -58,7 +59,7 @@ def update_book(id:UUID, data:BookUpdate) -> dict:
     if "total_copies" in updated_data:
         new_available_copies = updated_data["total_copies"] - book["total_copies"]
         if new_available_copies < 0:
-            raise Exception("the total number of copies is incorrect")
+            raise BadRequestException("the total number of copies is incorrect")
         book["available_copies"] += new_available_copies
 
     for info, current_data in updated_data.items():
@@ -77,10 +78,10 @@ def delete_book(book_id:UUID):
     book = fake_books_db[index]
 
     if not book["is_active"]:
-        raise Exception("this book was already deleted")
+        raise ConflictException("this book was already deleted")
     
     if loan_service.has_active_loans(book_id):
-        raise Exception ("this book has active loans, cannot be deleted")
+        raise BadRequestException("this book has active loans, cannot be deleted")
     
     book["is_active"] = False
 

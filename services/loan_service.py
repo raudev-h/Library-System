@@ -3,6 +3,7 @@ from datetime import date, datetime, timezone, timedelta
 from uuid import UUID, uuid4
 from user_service import get_user_by_id
 from book_service import get_book_by_id
+from exceptions import BadRequestException, NotFoundException, ConflictException
 
 MAX_ACTIVE_LOANS = 3
 LOAN_DURATION_DAYS = 15
@@ -16,17 +17,17 @@ def get_loan_by_id(id:UUID):
     for loan in fake_loan_db:
         if loan["id"] == id:
             return loan
-    raise Exception("loan not found")
+    raise NotFoundException("loan not found")
 
 def create_loan(user_id:UUID, book_id:UUID) -> dict:
     user = get_user_by_id(user_id)
     book = get_book_by_id(book_id)
 
     if book["available_copies"] <= 0:
-        raise Exception(f"Book: {book["title"]} has no copies available")
+        raise ConflictException(f"Book: {book["title"]} has no copies available")
     
     if not can_loan(user_id):
-        raise Exception(f"{user["name"]} has max loans active ({MAX_ACTIVE_LOANS})")
+        raise ConflictException(f"{user["name"]} has max loans active ({MAX_ACTIVE_LOANS})")
     
     today = date.today()
 
@@ -49,7 +50,7 @@ def return_loan(id:UUID) -> dict:
     loan = get_loan_by_id(id)
 
     if loan["is_returned"]:
-        raise Exception(f"this loan was returned at {loan["return_date"]}")
+        raise ConflictException(f"this loan was returned at {loan["return_date"]}")
 
     book_id = loan["book_id"]
     
@@ -66,10 +67,10 @@ def update_loan(id:UUID, data:LoanUpdate) -> dict:
     internal_loan = get_loan_by_id(id)
 
     if  internal_loan["is_returned"]:
-        raise Exception("this loan was already returned")
+        raise ConflictException("this loan was already returned")
         
     if not data.due_date > internal_loan["due_date"]:
-        raise Exception(
+        raise BadRequestException(
             f"the new date({data.due_date}) is not after due_date{internal_loan["due_date"]}"
             )
     
