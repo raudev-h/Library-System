@@ -8,7 +8,7 @@ fake_user_db = []
 def create_user(data:UserCreate) -> dict:
 
     for user in fake_user_db:
-        if data.email == user.email:
+        if data.email == user["email"]:
             raise ConflictException(f"{data.email} already exist")
     
     now = datetime.now(timezone.utc)
