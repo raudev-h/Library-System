@@ -1,8 +1,6 @@
 from schemas import BookCreate, BookResponse, BookUpdate
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
-from services import author_services
-from services import loan_service
 from exceptions import BadRequestException, NotFoundException, ConflictException
 
 fake_books_db = []
@@ -23,6 +21,7 @@ def _get_book_index(id:UUID) -> int:
     raise NotFoundException("book not found")
 
 def create_book(data:BookCreate) -> dict:
+    from author_services import find_authors
 
     for book in fake_books_db:
         if book["isbn"] == data.isbn:
@@ -34,7 +33,7 @@ def create_book(data:BookCreate) -> dict:
         "id":uuid4(),
         "title": data.title,
         "isbn": data.isbn,
-        "author":author_services.find_authors(data.author),
+        "author":find_authors(data.author),
         "total_copies": data.total_copies,
         "available_copies":data.total_copies,
         "created_at":now,
@@ -72,6 +71,7 @@ def update_book(id:UUID, data:BookUpdate) -> dict:
     return book
 
 def delete_book(book_id:UUID):
+    from loan_service import has_active_loans
     
     index = _get_book_index(book_id)
     
@@ -80,7 +80,7 @@ def delete_book(book_id:UUID):
     if not book["is_active"]:
         raise ConflictException("this book was already deleted")
     
-    if loan_service.has_active_loans(book_id):
+    if has_active_loans(book_id):
         raise BadRequestException("this book has active loans, cannot be deleted")
     
     book["is_active"] = False

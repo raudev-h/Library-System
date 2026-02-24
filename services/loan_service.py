@@ -1,8 +1,8 @@
 from schemas import LoanCreate, LoanUpdate, LoanResponse
 from datetime import date, datetime, timezone, timedelta
 from uuid import UUID, uuid4
-from user_service import get_user_by_id
-from book_service import get_book_by_id
+from .user_service import get_user_by_id
+from .book_service import get_book_by_id
 from exceptions import BadRequestException, NotFoundException, ConflictException
 
 MAX_ACTIVE_LOANS = 3

@@ -1,7 +1,6 @@
 from schemas import UserResponse, UserCreate, UserUpdateProfile
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
-from services import loan_service
 from exceptions import BadRequestException, NotFoundException, ConflictException
 
 fake_user_db = []
@@ -62,6 +61,7 @@ def update_user_profile(id:UUID, data:UserUpdateProfile):
     return current_user
 
 def delete_user(id:UUID):
+    from .loan_service import has_user_active_loans
 
     index = _get_user_index(id)
     current_user = fake_user_db[index]
@@ -69,7 +69,7 @@ def delete_user(id:UUID):
     if not current_user["is_active"]:
         raise ConflictException("user already deleted")
     
-    if loan_service.has_user_active_loans(id):
+    if has_user_active_loans(id):
         raise ConflictException("this user has active loans, cannot be deleted")
     
     current_user["is_active"] = False
