@@ -19,22 +19,22 @@ def get_loan_by_id(id:UUID):
             return loan
     raise NotFoundException("loan not found")
 
-def create_loan(user_id:UUID, book_id:UUID) -> dict:
-    user = get_user_by_id(user_id)
-    book = get_book_by_id(book_id)
+def create_loan(data:LoanCreate) -> dict:
+    user = get_user_by_id(data.user_id)
+    book = get_book_by_id(data.book_id)
 
     if book["available_copies"] <= 0:
         raise ConflictException(f"Book: {book["title"]} has no copies available")
     
-    if not can_loan(user_id):
+    if not can_loan(data.user_id):
         raise ConflictException(f"{user["name"]} has max loans active ({MAX_ACTIVE_LOANS})")
     
     today = date.today()
 
     loan = {
         "id":uuid4(),
-        "user_id":user_id,
-        "book_id":book_id,
+        "user_id":data.user_id,
+        "book_id":data.book_id,
         "loan_date":today,
         "due_date":today + timedelta(days=LOAN_DURATION_DAYS),
         "return_date":None,
