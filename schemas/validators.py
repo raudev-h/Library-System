@@ -15,5 +15,6 @@ def validate_date(incoming_date:date):
     return incoming_date
 
 def validate_copies(copies:int):
-        if copies < 0:
-            raise ValueError("the number of copies must be positive")
+    if copies < 0:
+        raise ValueError("the number of copies must be positive")
+    return copies

@@ -21,7 +21,7 @@ def _get_book_index(id:UUID) -> int:
     raise NotFoundException("book not found")
 
 def create_book(data:BookCreate) -> dict:
-    from author_services import find_authors
+    from services.author_services import find_authors
 
     for book in fake_books_db:
         if book["isbn"] == data.isbn:
