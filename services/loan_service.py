@@ -29,6 +29,9 @@ def create_loan(data:LoanCreate) -> dict:
     if not can_loan(data.user_id):
         raise ConflictException(f"{user["name"]} has max loans active ({MAX_ACTIVE_LOANS})")
     
+    if has_user_already_loan_book(data.user_id, data.book_id):
+        raise ConflictException("This user already borrowed that book")
+
     today = date.today()
 
     loan = {
@@ -109,5 +112,12 @@ def has_user_active_loans(user_id:UUID) -> bool:
 
     for loan in fake_loan_db:
         if loan["user_id"] == user_id and not loan["is_returned"]:
+            return True
+    return False
+
+def has_user_already_loan_book(user_id:UUID, book_id:UUID)-> bool :
+    
+    for loan in fake_loan_db:
+        if loan["user_id"] == user_id and loan["book_id"] == book_id and not loan["is_returned"]:
             return True
     return False
