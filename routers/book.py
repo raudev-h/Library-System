@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from services import book_service
+from services import book_author_service
 from schemas import BookCreate, BookResponse, BookUpdate, AuthorSummary
 from uuid import UUID
 
@@ -36,5 +37,7 @@ async def delete_book(id:UUID):
     book_service.delete_book(id)
 
 def to_book_response(book:dict):
-    book["author"] = [AuthorSummary.model_validate(author) for author in book["author"]]
+    book["author"] = [ 
+        AuthorSummary.model_validate(author) 
+            for author in book_author_service.get_authors_by_book(book["id"])]
     return BookResponse.model_validate(book)

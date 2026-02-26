@@ -2,6 +2,7 @@ from schemas import BookCreate, BookResponse, BookUpdate
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
 from exceptions import BadRequestException, NotFoundException, ConflictException
+from services import book_author_service
 
 fake_books_db = []
 
@@ -21,7 +22,6 @@ def _get_book_index(id:UUID) -> int:
     raise NotFoundException("book not found")
 
 def create_book(data:BookCreate) -> dict:
-    from services.author_services import find_authors
 
     for book in fake_books_db:
         if book["isbn"] == data.isbn:
@@ -33,13 +33,13 @@ def create_book(data:BookCreate) -> dict:
         "id":uuid4(),
         "title": data.title,
         "isbn": data.isbn,
-        "author":find_authors(data.author),
         "total_copies": data.total_copies,
         "available_copies":data.total_copies,
         "created_at":now,
         "updated_at":now,
         "is_active":True
     }
+    book_author_service.add_associations(internal_book["id"], data.author)
     fake_books_db.append(internal_book)
     return internal_book
 
