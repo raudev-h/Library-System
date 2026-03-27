@@ -1,0 +1,17 @@
+.page-container {
+  padding: var(--sp-8);
+}
+
+.page-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
+  flex-wrap: wrap;
+}
+
+.page-toolbar-right {
+  margin-left: auto;
+  display: flex;
+  gap: var(--sp-3);
+}
