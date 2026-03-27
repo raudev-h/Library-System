@@ -71,18 +71,19 @@ def update_book(id:UUID, data:BookUpdate) -> dict:
     return book
 
 def delete_book(book_id:UUID):
-    from loan_service import has_active_loans
-    
+    from services.loan_service import has_active_loans
+
     index = _get_book_index(book_id)
-    
+
     book = fake_books_db[index]
 
     if not book["is_active"]:
         raise ConflictException("this book was already deleted")
-    
+
     if has_active_loans(book_id):
         raise BadRequestException("this book has active loans, cannot be deleted")
-    
+
+    book_author_service.delete_associations(book_id)
     book["is_active"] = False
 
     return book
