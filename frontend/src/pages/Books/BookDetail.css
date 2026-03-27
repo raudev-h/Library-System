@@ -1,0 +1,58 @@
+.book-detail-header {
+  margin-bottom: var(--sp-6);
+}
+
+.book-detail-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+
+.book-detail-title {
+  font-size: 26px;
+  color: var(--text-primary);
+}
+
+.book-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.book-detail-isbn {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+.book-detail-authors {
+  margin-bottom: var(--sp-6);
+}
+
+.book-detail-section-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  font-family: var(--font-body);
+  margin-bottom: var(--sp-3);
+}
+
+.author-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.author-tag {
+  padding: 4px 12px;
+  background: var(--accent-dim);
+  border: 1px solid var(--border-accent);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--accent);
+}
