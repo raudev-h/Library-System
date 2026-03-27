@@ -14,7 +14,7 @@ class AuthorCreate(BaseModel):
 
     @field_validator("birth_date")
     @classmethod
-    def correct_date(cls,value:datetime):
+    def correct_date(cls,value:date):
         return validate_date(value)
 
 class AuthorUpdate(BaseModel): 
@@ -26,7 +26,7 @@ class AuthorUpdate(BaseModel):
 
     @field_validator("birth_date")
     @classmethod
-    def correct_date(cls,value:datetime):
+    def correct_date(cls,value:date):
         return validate_date(value)
 
 class AuthorResponse(BaseModel):
