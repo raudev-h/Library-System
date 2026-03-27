@@ -1,6 +1,7 @@
 from schemas import AuthorResponse, AuthorCreate, AuthorUpdate, AuthorSummary
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
+from exceptions import NotFoundException
 
 fake_author_db = []
 
@@ -39,13 +40,13 @@ def  get_author_by_id(id:UUID):
     for author in fake_author_db:
         if author["id"] == id:
             return author
-    raise Exception({"description":"author not found"})
+    raise NotFoundException("author not found")
 
 def _get_author_index(id:UUID):
     for index, author in enumerate(fake_author_db):
         if author["id"] == id:
             return index
-    raise Exception({"description":"author not found"})
+    raise NotFoundException("author not found")
 
 def update_author(id:UUID, data:AuthorUpdate) -> dict:
 
