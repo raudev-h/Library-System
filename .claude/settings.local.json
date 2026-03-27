@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"D:/Desarrollador Web/Library System/Scripts/python.exe\" -m pytest -v 2>&1)",
+      "Bash(\"/d/Desarrollador Web/Library System/.venv/Scripts/python.exe\" -m pytest -v 2>&1)"
+    ]
+  }
+}
