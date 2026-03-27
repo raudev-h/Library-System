@@ -12,7 +12,7 @@ class UserCreate(BaseModel):
 
     @field_validator("password")
     @classmethod
-    def password_lengt(cls,value):
+    def password_length(cls,value):
         return validate_password_length(value)
     
     @model_validator(mode="after")
