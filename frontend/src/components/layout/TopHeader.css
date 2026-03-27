@@ -1,0 +1,20 @@
+.top-header {
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-width);
+  right: 0;
+  height: var(--header-height);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--sp-8);
+}
+
+.top-header-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text-primary);
+}

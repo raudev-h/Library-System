@@ -1,0 +1,10 @@
+.main-layout {
+  min-height: 100vh;
+  background: var(--bg-base);
+}
+
+.main-content {
+  margin-left: var(--sidebar-width);
+  padding-top: var(--header-height);
+  min-height: 100vh;
+}
