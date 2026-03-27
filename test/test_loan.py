@@ -4,6 +4,7 @@ from services.loan_service import fake_loan_db
 from services.user_service import fake_user_db
 from services.author_services import fake_author_db
 from services.book_service import fake_books_db
+from services.book_author_service import fake_book_author_db
 import pytest
 from datetime import date, timedelta
 
@@ -42,6 +43,7 @@ def clear_db():
     fake_author_db.clear()
     fake_user_db.clear()
     fake_books_db.clear()
+    fake_book_author_db.clear()
     yield
 
 
