@@ -1,8 +1,7 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from services import user_service
 from schemas import UserCreate, UserResponse, UserUpdateProfile
 from uuid import UUID
-from datetime import datetime, timezone
 
 router = APIRouter(prefix="/user",
                         tags=["user"],
@@ -28,11 +27,8 @@ async def get_users():
     
 @router.get("/{id}", response_model=UserResponse)
 async def get_user(id:UUID):
-    try:
-        user = user_service.get_user_by_id(id)
-        return UserResponse.model_validate(user)
-    except:
-        raise Exception("user not found")
+    user = user_service.get_user_by_id(id)
+    return UserResponse.model_validate(user)
 
 @router.post("/", response_model=UserResponse)
 async def create_user(data:UserCreate) -> UserResponse:
